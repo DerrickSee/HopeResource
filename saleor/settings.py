@@ -165,6 +165,7 @@ INSTALLED_APPS = [
     'saleor.search',
     'saleor.site',
     'saleor.data_feeds',
+    'churches',
 
     # External apps
     'versatileimagefield',

@@ -1,0 +1,34 @@
+{% load bootstrap_field from bootstrap3 %}
+{% load i18n %}
+{% load materializecss %}
+
+
+<form method="post" enctype="multipart/form-data" id="form-attributes" novalidate>
+  <div class="card-content card-content-form">
+    {% csrf_token %}
+    <div class="row">
+      {% for field in form %}
+      <div class="col l6">
+          {{ field|materializecss }}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card-action right-align">
+    {% if object.pk %}
+      <a href="{% url 'dashboard:church-list' %}" class="btn btn-flat">
+        {% trans "Cancel" context "Dashboard cancel action" %}
+      </a>
+      <button type="submit" class="btn waves-effect waves-light">
+        {% trans "Update" context "Dashboard update action" %}
+      </button>
+    {% else %}
+      <a href="{% url 'dashboard:church-list' %}" class="btn btn-flat">
+        {% trans "Cancel" context "Dashboard cancel action" %}
+      </a>
+      <button type="submit" class="btn waves-effect waves-light">
+        {% trans "Create" context "Dashboard create action" %}
+      </button>
+    {% endif %}
+  </div>
+</form>
