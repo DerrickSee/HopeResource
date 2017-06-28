@@ -1,7 +1,6 @@
 {% extends "dashboard/base.html" %}
 {% load i18n %}
-{% load staticfiles %}
-
+{% load staticfiles materializecss %}
 
 {% block title %}
   {{ church }} - {% trans "Churches" context "Dashboard churches list" %} - {{ block.super }}
@@ -45,15 +44,13 @@
             <span>
               {% trans "Details" context "Church detail tab" %}
             </span>
-            <svg data-src="{% static "dashboard/images/description.svg" %}" />
           </a>
         </li>
         <li role="presentation" class="tab col s4">
-          <a href="#payment-history" role="tab">
+          <a href="#members" role="tab">
             <span>
-              {% trans "Admin" context "Church detail tab" %}
+              {% trans "Members" context "Church detail tab" %}
             </span>
-            <svg data-src="{% static "dashboard/images/payment.svg" %}" />
           </a>
         </li>
         <li role="presentation" class="tab col s4">
@@ -70,6 +67,46 @@
   <div class="card tab-content" id="church-details">
     <div class="card-content">
       {% include 'churches/snippets/church-form.html' %}
+    </div>
+  </div>
+  <div class="card tab-content" id="members">
+    <div class="card-content">
+      <div class="row">
+        <div class="col s12">
+          <a class="waves-effect waves-light btn" href="#add-user">Add Member</a>
+          <div id="add-user" class="modal">
+            <form action="{% url 'dashboard:church-membership-create' object.pk %}" method="POST">
+              <div class="modal-content">
+                <h4>Add Member</h4>
+                {% csrf_token %}
+                {{ membership_form | materializecss }}
+
+              </div>
+              <div class="modal-footer">
+                <input type="submit" value="Submit" class="modal-action modal-close waves-effect waves-green btn-flat">
+              </div>
+            </form>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for member in church.memberships.all %}
+              <tr>
+                <td>{{ member.user.get_full_name }}</td>
+                <td>{{ member.title }}</td>
+                <td>{{ member.role }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 

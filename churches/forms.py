@@ -8,6 +8,7 @@ address_fields = ['first_name', 'last_name',
                   'street_address_1', 'street_address_2',
                   'postal_code', 'phone']
 
+
 class ChurchForm(forms.ModelForm):
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
@@ -37,3 +38,15 @@ class ChurchForm(forms.ModelForm):
             instance.address = address
             instance.save()
         return instance
+
+
+class ChurchMembershipForm(forms.ModelForm):
+    role = forms.ChoiceField(choices=[
+        ('member', 'Member'),
+        ('staff', 'Staff'),
+        ('owner', 'Owner'),
+    ])
+
+    class Meta:
+        model = ChurchMembership
+        fields = ['user', 'title']
