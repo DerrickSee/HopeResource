@@ -110,6 +110,8 @@ class UserManager(BaseUserManager):
 
 class User(PermissionsMixin, AbstractBaseUser, index.Indexed):
     email = models.EmailField(pgettext_lazy('User field', 'email'), unique=True)
+    first_name = models.CharField(max_length=250)
+    last_name = models.CharField(max_length=250)
     addresses = models.ManyToManyField(
         Address, blank=True,
         verbose_name=pgettext_lazy('User field', 'addresses'))
@@ -143,7 +145,7 @@ class User(PermissionsMixin, AbstractBaseUser, index.Indexed):
         verbose_name_plural = pgettext_lazy('User model', 'users')
 
     def get_full_name(self):
-        return self.email
+        return "%s %s" % (self.first_name, self.last_name)
 
     def get_short_name(self):
-        return self.email
+        return self.first_name
