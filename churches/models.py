@@ -6,7 +6,6 @@ from django.conf import settings
 from saleor.userprofile.models import Address
 
 
-# Create your models here.
 class Church(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=50)

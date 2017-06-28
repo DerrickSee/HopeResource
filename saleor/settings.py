@@ -166,6 +166,7 @@ INSTALLED_APPS = [
     'saleor.site',
     'saleor.data_feeds',
     'churches',
+    'reviews',
 
     # External apps
     'versatileimagefield',
@@ -251,6 +252,7 @@ GOOGLE_ANALYTICS_TRACKING_ID = os.environ.get('GOOGLE_ANALYTICS_TRACKING_ID')
 def get_host():
     from saleor.site.utils import get_domain
     return get_domain()
+
 
 PAYMENT_HOST = get_host
 
