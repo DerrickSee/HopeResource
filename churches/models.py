@@ -25,6 +25,9 @@ class ChurchMembership(models.Model):
     date_joined = models.DateField(auto_now_add=True)
     title = models.CharField(max_length=250, default="Member")
 
+    class meta:
+        ordering = ("is_owner", "is_staff", "title")
+
     def role(self):
         if self.is_owner:
             return "Owner"

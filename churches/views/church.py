@@ -16,3 +16,12 @@ class ChurchAdminMixin(object):
 
 class ChurchHomeView(TemplateView):
     template_name = 'churches/base.html'
+
+
+class ChurchMembershipListView(ListView):
+    model = ChurchMembership
+
+    def get_queryset(self):
+        return super(ChurchMembershipListView, self).get_queryset().filter(
+            church__slug=self.kwargs.get("slug")
+        )

@@ -15,10 +15,11 @@ class ChurchMixin(object):
 
 
 class ChurchListView(ChurchMixin, ListView):
-    pass
+    template_name = "dashboard/churches/church_list.html"
 
 
 class ChurchCreateView(ChurchMixin, CreateView):
+    template_name = "dashboard/churches/church_form.html"
 
     def get_context_data(self, *args, **kwargs):
         context = super(ChurchCreateView, self).get_context_data(*args, **kwargs)
@@ -32,7 +33,7 @@ class ChurchCreateView(ChurchMixin, CreateView):
 
 
 class ChurchDetailView(ChurchMixin, UpdateView):
-    template_name = "churches/church_detail.html"
+    template_name = "dashboard/churches/church_detail.html"
 
     def get_context_data(self, **kwargs):
         context = super(ChurchDetailView, self).get_context_data(**kwargs)
