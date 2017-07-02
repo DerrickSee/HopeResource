@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^search/', include(search_urls)),
     url(r'^settings/', include(site_urls)),
     url(r'^shipping/', include(shipping_urls)),
-    url(r'^church/', include('churches.urls')),
+    url(r'^church/', include('churches.dashboard_urls')),
     url(r'^style-guide/', core_views.styleguide, name='styleguide'),
 ]

@@ -79,7 +79,12 @@ STATICFILES_DIRS = [
 ]
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+]
+
+SASS_PROCESSOR_INCLUDE_DIRS = [
+    os.path.join(PROJECT_ROOT, 'saleor', 'static', 'scss'),
 ]
 
 context_processors = [
@@ -183,6 +188,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'social_django',
     'django_countries',
+    'sass_processor',
 ]
 
 LOGGING = {
