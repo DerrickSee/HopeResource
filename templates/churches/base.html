@@ -46,12 +46,17 @@
 			<div class="collapse navbar-collapse" id="navigation-example">
 				<ul class="nav navbar-nav navbar-right">
 					<li>
+						<a href="#" class="btn btn-simple btn-white ">
+							{{ church.name }}
+						</a>
+					</li>
+					<li>
 						<a href="#" class="btn btn-simple btn-white btn-just-icon">
 							<i class="fa fa-cog"></i>
 						</a>
 					</li>
 					<li>
-						<a href="#" class="btn btn-simple btn-white btn-just-icon">
+						<a href="{% url 'account_logout' %}" class="btn btn-simple btn-white btn-just-icon">
 							<i class="fa fa-sign-out"></i>
 						</a>
 					</li>
@@ -70,21 +75,21 @@
 						<div class="col-md-6 col-md-offset-3">
 							<div class="profile-tabs">
 								<div class="nav-align-center">
-									<ul class="nav nav-pills" role="tablist">
-										<li class="active">
-											<a href="#studio" role="tab" data-toggle="tab">
+									<ul class="nav nav-pills">
+										<li class="{% block menu_membership_class %}{% endblock %}">
+											<a href="{% url 'church-membership-list' church.slug %}">
 												<i class="material-icons">supervisor_account</i>
 												Staff
 											</a>
 										</li>
-										<li>
-											<a href="#work" role="tab" data-toggle="tab">
+										<li class="{% block menu_product_class %}{% endblock %}">
+											<a href="#work">
 												<i class="material-icons">book</i>
 												Products
 											</a>
 										</li>
 										<li>
-											<a href="#shows" role="tab" data-toggle="tab">
+											<a href="#shows">
 												<i class="material-icons">favorite</i>
 												Favorite
 											</a>
@@ -93,12 +98,11 @@
 								</div>
 							</div>
 							<!-- End Profile Tabs -->
-							{% block content %}
-							
-							{% endblock %}
-
 						</div>
 					</div>
+					{% block content %}
+
+					{% endblock %}
 
 				</div>
 			</div>
