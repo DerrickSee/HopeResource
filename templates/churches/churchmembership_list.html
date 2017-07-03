@@ -3,12 +3,14 @@
 {% block menu_membership_class %}active{% endblock %}
 
 {% block actions %}
+{% if is_owner %}
 <li>
   <a href="{% url 'church-membership-create' church.slug %}">
     <i class="material-icons">person_add</i>
     Add Staff
   </a>
 </li>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -20,7 +22,9 @@
           <th>Name</th>
           <th>Title</th>
           <th>Permission</th>
+          {% if is_owner %}
           <th class="text-right">Actions</th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
@@ -29,11 +33,13 @@
           <td>{{ member.user.get_full_name }}</td>
           <td>{{ member.title }}</td>
           <td>{{ member.get_permission_display }}</td>
+          {% if is_owner %}
           <td class="td-actions text-right">
-            <button type="button" rel="tooltip" title="Edit Profile" class="btn btn-success btn-simple btn-xs">
+            <a rel="tooltip" title="Edit Profile" class="btn btn-success btn-simple btn-xs" href="{% url 'church-membership-update' church.slug member.pk %}">
               <i class="fa fa-edit"></i>
-            </button>
+            </a>
           </td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>

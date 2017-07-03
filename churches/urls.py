@@ -9,8 +9,7 @@ urlpatterns = [
             name='church-membership-list'),
         url(r'^members/add/$', views.ChurchMembershipCreateView.as_view(),
             name='church-membership-create'),
-        # url(r'^login/$', views.ChurchLoginView.as_view(), name='church-login'),
-        # url(r'^admin/$', views.ChurchAdminListView.as_view(),
-        #     name='church-admin-list'),
+        url(r'^members/(?P<pk>[0-9]+)/$', views.ChurchMembershipUpdateView.as_view(),
+            name='church-membership-update'),
     ])),
 ]

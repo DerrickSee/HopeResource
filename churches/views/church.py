@@ -22,11 +22,13 @@ class ChurchAdminMixin(LoginRequiredMixin):
             memberships__user=self.request.user,
             memberships__permission__lt=3
         )
+        self.membership = self.church.memberships.get(user=self.request.user)
         return super(ChurchAdminMixin, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ChurchAdminMixin, self).get_context_data(**kwargs)
         context['church'] = self.church
+        context['is_owner'] = self.membership.permission == 1
         return context
 
 
@@ -50,6 +52,19 @@ class ChurchMembershipCreateView(ChurchAdminMixin, CreateView):
     def form_valid(self, form):
         form.instance.church = self.church
         return super(ChurchMembershipCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('church-membership-list', kwargs={'slug': self.church.slug})
+
+
+class ChurchMembershipUpdateView(ChurchAdminMixin, UpdateView):
+    model = ChurchMembership
+    fields = ['title', 'permission']
+    template_name = "churches/membership_update.html"
+
+    def get_queryset(self):
+        return super(ChurchMembershipUpdateView, self).get_queryset().filter(
+            church=self.church)
 
     def get_success_url(self):
         return reverse('church-membership-list', kwargs={'slug': self.church.slug})

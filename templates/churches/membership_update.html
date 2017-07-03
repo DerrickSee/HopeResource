@@ -1,0 +1,25 @@
+{% extends "churches/churchmembership_form.html" %}
+{% load bootstrap3 %}
+
+{% block nav %}
+<li>
+  <a href="{% url 'church-membership-list' church.slug %}">
+    <i class="material-icons">arrow_back</i>
+    Back to Staff
+  </a>
+</li>
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <form method="post">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <input type="submit" value="Save" class="btn btn-primary">
+    </form>
+  </div>
+</div>
+{% endblock %}
