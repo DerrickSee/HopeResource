@@ -4,8 +4,10 @@ from django.views.generic import (ListView, CreateView, UpdateView, DetailView,
 from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST, require_GET
+from django.template.response import TemplateResponse
 
 from saleor.dashboard.views import staff_member_required
 from saleor.userprofile.forms import get_address_form
@@ -83,17 +85,49 @@ class ChurchBlacklistView(ChurchAdminMixin, ListView):
         return super(ChurchBlacklistView, self).get_queryset().filter(church=self.church)
 
 
-@login_required
-def ChurchBlacklistSearchView(request, slug):
-    church = get_object_or_404(
+def get_church(request, slug):
+    return get_object_or_404(
         Church,
         slug=slug,
         memberships__user=request.user,
         memberships__permission__lte=2
     )
+
+
+@require_GET
+@login_required
+def ChurchBlacklistSearchView(request, slug):
+    church = get_church(request, slug)
     queryset = Product.objects.exclude(church=church).filter(
         name__icontains=request.GET.get('term', '')).values("name", "pk")
     for product in queryset:
         product['label'] = product.pop('name')
         product['value'] = product.pop('pk')
     return JsonResponse(list(queryset), safe=False)
+
+
+@require_POST
+@login_required
+def ChurchBlacklistAddView(request, slug):
+    church = get_church(request, slug)
+    product = get_object_or_404(
+        Product,
+        pk=request.POST.get('pk', '')
+    )
+    church.blacklist.add(product)
+    return TemplateResponse(
+        request, 'churches/snippets/blacklist_row.html', {
+            'name': product.name,
+            'url': reverse('church-blacklist-remove',
+                           kwargs={"slug": slug, "pk": product.pk})
+            }
+    )
+
+
+@require_POST
+@login_required
+def ChurchBlacklistRemoveView(request, slug, pk):
+    church = get_church(request, slug)
+    product = get_object_or_404(Product, pk=pk)
+    church.blacklist.remove(product)
+    return JsonResponse({'name': product.name})

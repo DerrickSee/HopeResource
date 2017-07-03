@@ -16,7 +16,11 @@ urlpatterns = [
             name='church-membership-delete'),
         url(r'^blacklist/$', views.ChurchBlacklistView.as_view(),
             name='church-blacklist'),
-        url(r'^blacklist/search$', views.ChurchBlacklistSearchView,
+        url(r'^blacklist/search/$', views.ChurchBlacklistSearchView,
             name='church-blacklist-search'),
+        url(r'^blacklist/add/$', views.ChurchBlacklistAddView,
+            name='church-blacklist-add'),
+        url(r'^blacklist/remove/(?P<pk>[0-9]+)/$', views.ChurchBlacklistRemoveView,
+            name='church-blacklist-remove'),
     ])),
 ]
