@@ -14,5 +14,9 @@ urlpatterns = [
         url(r'^members/(?P<pk>[0-9]+)/delete/$',
             views.ChurchMembershipDeleteView.as_view(),
             name='church-membership-delete'),
+        url(r'^blacklist/$', views.ChurchBlacklistView.as_view(),
+            name='church-blacklist'),
+        url(r'^blacklist/search$', views.ChurchBlacklistSearchView,
+            name='church-blacklist-search'),
     ])),
 ]

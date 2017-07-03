@@ -1,0 +1,64 @@
+{% extends "churches/base.html" %}
+
+{% block menu_blacklist_class %}active{% endblock %}
+
+{% block actions %}
+{% endblock %}
+
+{% block content %}
+<div class="row" style="margin-bottom: 20px;">
+  <div class="col-lg-6">
+    <div class="form-group label-floating" id="autocomplete">
+  		<label class="control-label">Search for product to blacklist</label>
+  		<input type="text" class="form-control autocomplete">
+  	</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in object_list %}
+        <tr>
+          <td>{{ product.name }}</td>
+          <td class="td-actions text-right">
+            <a rel="tooltip" title="Edit Profile" class="btn btn-danger btn-simple btn-xs" href="">
+              <i class="fa fa-cancel"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+var data = ['test1','test2','test3','test4','ietsanders'];
+$('input.autocomplete').autocomplete({
+    source: function(request, response){
+      $.get("{% url 'church-blacklist-search' church.slug %}?term="+request.term, function( data ) {
+        response(data);
+      });
+    },
+    limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+    onAutocomplete: function(val) {
+      // Callback function when value is autcompleted.
+    },
+    appendTo: "#autocomplete",
+    classes: {
+      "ui-autocomplete": "autocomplete-content"
+    },
+    minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+  });
+</script>
+{% endblock %}

@@ -4,9 +4,12 @@ from django.views.generic import (ListView, CreateView, UpdateView, DetailView,
 from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 from saleor.dashboard.views import staff_member_required
 from saleor.userprofile.forms import get_address_form
+from saleor.product.models import Product
 
 from ..models import *
 from ..forms import *
@@ -70,3 +73,27 @@ class ChurchMembershipUpdateView(ChurchAdminMembershipMixin, UpdateView):
 class ChurchMembershipDeleteView(ChurchAdminMembershipMixin, DeleteView):
     template_name = "churches/membership_delete.html"
     permission = 1
+
+
+class ChurchBlacklistView(ChurchAdminMixin, ListView):
+    model = Product
+    template_name = "churches/blacklist_list.html"
+
+    def get_queryset(self):
+        return super(ChurchBlacklistView, self).get_queryset().filter(church=self.church)
+
+
+@login_required
+def ChurchBlacklistSearchView(request, slug):
+    church = get_object_or_404(
+        Church,
+        slug=slug,
+        memberships__user=request.user,
+        memberships__permission__lte=2
+    )
+    queryset = Product.objects.exclude(church=church).filter(
+        name__icontains=request.GET.get('term', '')).values("name", "pk")
+    for product in queryset:
+        product['label'] = product.pop('name')
+        product['value'] = product.pop('pk')
+    return JsonResponse(list(queryset), safe=False)

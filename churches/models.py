@@ -12,6 +12,7 @@ class Church(models.Model):
     address = models.ForeignKey(Address, null=True, on_delete=models.SET_NULL)
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through='ChurchMembership')
+    blacklist = models.ManyToManyField("product.Product")
 
     def __str__(self):
         return self.name
