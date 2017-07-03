@@ -7,6 +7,8 @@ urlpatterns = [
         url(r'^$', views.ChurchHomeView.as_view(), name='church-home'),
         url(r'^members/$', views.ChurchMembershipListView.as_view(),
             name='church-membership-list'),
+        url(r'^members/add/$', views.ChurchMembershipCreateView.as_view(),
+            name='church-membership-create'),
         # url(r'^login/$', views.ChurchLoginView.as_view(), name='church-login'),
         # url(r'^admin/$', views.ChurchAdminListView.as_view(),
         #     name='church-admin-list'),

@@ -15,6 +15,10 @@ from ..forms import *
 class ChurchAdminMixin(LoginRequiredMixin, UserPassesTestMixin):
     model = Church
 
+    def dispatch(self, request, *args, **kwargs):
+        self.church = get_object_or_404(Church, slug=self.kwargs.get("slug"))
+        return super(ChurchAdminMixin, self).dispatch(request, *args, **kwargs)
+
     def test_func(self):
         return self.request.user.churchmembership_set.filter(
             Q(church__slug=self.kwargs.get("slug")),
@@ -22,8 +26,7 @@ class ChurchAdminMixin(LoginRequiredMixin, UserPassesTestMixin):
 
     def get_context_data(self, **kwargs):
         context = super(ChurchAdminMixin, self).get_context_data(**kwargs)
-        context['church'] = get_object_or_404(
-            Church, slug=self.kwargs.get("slug"))
+        context['church'] = self.church
         return context
 
 
@@ -38,3 +41,15 @@ class ChurchMembershipListView(ChurchAdminMixin, ListView):
         return super(ChurchMembershipListView, self).get_queryset().filter(
             church__slug=self.kwargs.get("slug")
         )
+
+
+class ChurchMembershipCreateView(ChurchAdminMixin, CreateView):
+    model = ChurchMembership
+    form_class = ChurchMembershipForm
+
+    def form_valid(self, form):
+        form.instance.church = self.church
+        return super(ChurchMembershipCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('church-membership-list', kwargs={'slug': self.church.slug})

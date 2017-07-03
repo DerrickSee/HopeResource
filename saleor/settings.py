@@ -189,6 +189,7 @@ INSTALLED_APPS = [
     'social_django',
     'django_countries',
     'sass_processor',
+    'django_extensions',
 ]
 
 LOGGING = {

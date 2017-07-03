@@ -25,6 +25,7 @@
 	<link href="{% static 'churches/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% sass_src 'churches/material.scss' %}" rel="stylesheet" type="text/css" />
 	<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+	<link href="{% sass_src 'churches/style.scss' %}" rel="stylesheet" type="text/css" />
 
 	{% block stylesheet %}{% endblock stylesheet %}
 
@@ -74,8 +75,8 @@
 				<div class="container">
 					<div class="row" style="margin-bottom: 30px;">
 						<div class="col-md-6">
-							{% block nav %}
 							<ul class="nav nav-pills">
+								{% block nav %}
 								<li class="{% block menu_membership_class %}{% endblock %}">
 									<a href="{% url 'church-membership-list' church.slug %}">
 										<i class="material-icons">supervisor_account</i>
@@ -94,8 +95,8 @@
 										Favorite
 									</a>
 								</li>
+								{% endblock %}
 							</ul>
-							{% endblock %}
 							<!-- End Profile Tabs -->
 						</div>
 						<div class="col-md-6">

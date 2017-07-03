@@ -95,17 +95,17 @@ $mdb-input-line-height-small:         1.5 !default;
 $mdb-input-padding-base-vertical:     8px - 1px !default; // was 6.
 $mdb-input-padding-base-horizontal:   0 !default; // was 12.
 $mdb-label-as-placeholder-shim-base:  0 !default; // manual adjustment of label top when positioned as placeholder
-$mdb-label-top-margin-base:           16px !default;
+$mdb-label-top-margin-base:           0px !default;
 
 $mdb-input-padding-large-vertical:    10px - 1px !default; // 10
 $mdb-input-padding-large-horizontal:  0 !default;  // 16
 $mdb-label-as-placeholder-shim-large: -4px !default; // manual adjustment of label top when positioned as placeholder
-$mdb-label-top-margin-large:          16px !default;
+$mdb-label-top-margin-large:          0px !default;
 
 $mdb-input-padding-small-vertical:    4px - 1px !default; // 5
 $mdb-input-padding-small-horizontal:  0 !default; // 10
 $mdb-label-as-placeholder-shim-small: 8px !default; // manual adjustment of label top when positioned as placeholder
-$mdb-label-top-margin-small:          12px !default;
+$mdb-label-top-margin-small:          0px !default;
 
 $mdb-input-padding-xs-vertical:       2px !default; // 1
 $mdb-input-padding-xs-horizontal:     0 !default; // 5

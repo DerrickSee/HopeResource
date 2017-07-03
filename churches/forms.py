@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import get_user_model
 
 from .models import *
 from saleor.userprofile.models import Address
@@ -41,6 +42,9 @@ class ChurchForm(forms.ModelForm):
 
 
 class ChurchMembershipForm(forms.ModelForm):
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    email = forms.EmailField()
     role = forms.ChoiceField(choices=[
         ('member', 'Member'),
         ('staff', 'Staff'),
@@ -49,4 +53,18 @@ class ChurchMembershipForm(forms.ModelForm):
 
     class Meta:
         model = ChurchMembership
-        fields = ['user', 'title']
+        fields = ['title']
+
+    def save(self, commit=True):
+        instance = super(ChurchMembershipForm, self).save(commit=False)
+        if commit:
+            data = self.cleaned_data
+            user = get_user_model().objects.filter(email=data['email']).first()
+            if not user:
+                password = get_user_model().objects.make_random_password()
+                user = get_user_model().objects.create_user(
+                    first_name=data['first_name'], last_name=data['last_name'],
+                    email=data['email'], password=password)
+            instance.user = user
+            instance.save()
+        return instance

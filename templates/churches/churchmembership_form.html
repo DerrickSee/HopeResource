@@ -1,0 +1,31 @@
+{% extends "churches/base.html" %}
+{% load bootstrap3 %}
+
+{% block nav %}
+<li>
+  <a href="{% url 'church-membership-list' church.slug %}">
+    <i class="material-icons">arrow_back</i>
+    Back to Staff
+  </a>
+</li>
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <form method="post">
+      {% csrf_token %}
+      <div class="row">
+        {% bootstrap_field form.first_name form_group_class="form-group col-lg-6" %}
+        {% bootstrap_field form.last_name form_group_class="form-group col-lg-6" %}
+      </div>
+      {% bootstrap_field form.email %}
+      {% bootstrap_field form.role %}
+      {% bootstrap_field form.title %}
+      <input type="submit" value="Submit" class="btn btn-primary">
+    </form>
+  </div>
+</div>
+{% endblock %}
