@@ -19,6 +19,7 @@
       {% csrf_token %}
       {% bootstrap_form form %}
       <input type="submit" value="Save" class="btn btn-primary">
+      <a href="{% url 'church-membership-delete' church.slug object.pk %}" class="btn btn-danger pull-right">Remove member</a>
     </form>
   </div>
 </div>

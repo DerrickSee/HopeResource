@@ -11,5 +11,8 @@ urlpatterns = [
             name='church-membership-create'),
         url(r'^members/(?P<pk>[0-9]+)/$', views.ChurchMembershipUpdateView.as_view(),
             name='church-membership-update'),
+        url(r'^members/(?P<pk>[0-9]+)/delete/$',
+            views.ChurchMembershipDeleteView.as_view(),
+            name='church-membership-delete'),
     ])),
 ]

@@ -1,0 +1,19 @@
+{% extends "churches/churchmembership_form.html" %}
+{% load bootstrap3 %}
+
+{% block nav %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <form method="post">
+      {% csrf_token %}
+      <p>Are you sure you want to remove {{ object.user.get_full_name }} from {{ church.name }}?</p>
+      <input type="submit" value="Yes, Remove this user." class="btn btn-danger">
+      <a class="btn btn-default" href="{% url 'church-membership-update' church.slug object.pk %}">Cancel</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

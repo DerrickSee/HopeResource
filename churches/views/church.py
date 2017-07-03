@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import (ListView, CreateView, UpdateView, DetailView,
-                                  TemplateView)
+                                  TemplateView, DeleteView)
 from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.db.models import Q
@@ -14,13 +14,14 @@ from ..forms import *
 
 class ChurchAdminMixin(LoginRequiredMixin):
     model = Church
+    permission = 2
 
     def dispatch(self, request, *args, **kwargs):
         self.church = get_object_or_404(
             Church,
             slug=self.kwargs.get("slug"),
             memberships__user=self.request.user,
-            memberships__permission__lt=3
+            memberships__permission__lte=self.permission
         )
         self.membership = self.church.memberships.get(user=self.request.user)
         return super(ChurchAdminMixin, self).dispatch(request, *args, **kwargs)
@@ -36,35 +37,36 @@ class ChurchHomeView(ChurchAdminMixin, TemplateView):
     template_name = 'churches/base.html'
 
 
-class ChurchMembershipListView(ChurchAdminMixin, ListView):
+class ChurchAdminMembershipMixin(ChurchAdminMixin):
     model = ChurchMembership
 
     def get_queryset(self):
-        return super(ChurchMembershipListView, self).get_queryset().filter(
-            church__slug=self.kwargs.get("slug")
-        )
+        return super(ChurchAdminMembershipMixin, self).get_queryset().filter(
+            church=self.church)
+
+    def get_success_url(self):
+        return reverse('church-membership-list', kwargs={'slug': self.church.slug})
 
 
-class ChurchMembershipCreateView(ChurchAdminMixin, CreateView):
-    model = ChurchMembership
+class ChurchMembershipListView(ChurchAdminMembershipMixin, ListView):
+    pass
+
+
+class ChurchMembershipCreateView(ChurchAdminMembershipMixin, CreateView):
     form_class = ChurchMembershipForm
+    permission = 1
 
     def form_valid(self, form):
         form.instance.church = self.church
         return super(ChurchMembershipCreateView, self).form_valid(form)
 
-    def get_success_url(self):
-        return reverse('church-membership-list', kwargs={'slug': self.church.slug})
 
-
-class ChurchMembershipUpdateView(ChurchAdminMixin, UpdateView):
-    model = ChurchMembership
+class ChurchMembershipUpdateView(ChurchAdminMembershipMixin, UpdateView):
     fields = ['title', 'permission']
     template_name = "churches/membership_update.html"
+    permission = 1
 
-    def get_queryset(self):
-        return super(ChurchMembershipUpdateView, self).get_queryset().filter(
-            church=self.church)
 
-    def get_success_url(self):
-        return reverse('church-membership-list', kwargs={'slug': self.church.slug})
+class ChurchMembershipDeleteView(ChurchAdminMembershipMixin, DeleteView):
+    template_name = "churches/membership_delete.html"
+    permission = 1
