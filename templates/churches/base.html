@@ -24,6 +24,7 @@
 	{% include 'favicon.html' %}
 	<link href="{% static 'churches/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
 	<link href="{% sass_src 'churches/material.scss' %}" rel="stylesheet" type="text/css" />
+	<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
 
 	{% block stylesheet %}{% endblock stylesheet %}
 
@@ -71,33 +72,38 @@
 		<div class="main main-raised">
 			<div class="profile-content">
 				<div class="container">
-					<div class="row">
-						<div class="col-md-6 col-md-offset-3">
-							<div class="profile-tabs">
-								<div class="nav-align-center">
-									<ul class="nav nav-pills">
-										<li class="{% block menu_membership_class %}{% endblock %}">
-											<a href="{% url 'church-membership-list' church.slug %}">
-												<i class="material-icons">supervisor_account</i>
-												Staff
-											</a>
-										</li>
-										<li class="{% block menu_product_class %}{% endblock %}">
-											<a href="#work">
-												<i class="material-icons">book</i>
-												Products
-											</a>
-										</li>
-										<li>
-											<a href="#shows">
-												<i class="material-icons">favorite</i>
-												Favorite
-											</a>
-										</li>
-									</ul>
-								</div>
-							</div>
+					<div class="row" style="margin-bottom: 30px;">
+						<div class="col-md-6">
+							{% block nav %}
+							<ul class="nav nav-pills">
+								<li class="{% block menu_membership_class %}{% endblock %}">
+									<a href="{% url 'church-membership-list' church.slug %}">
+										<i class="material-icons">supervisor_account</i>
+										Staff
+									</a>
+								</li>
+								<li class="{% block menu_product_class %}{% endblock %}">
+									<a href="#work">
+										<i class="material-icons">book</i>
+										Products
+									</a>
+								</li>
+								<li>
+									<a href="#shows">
+										<i class="material-icons">favorite</i>
+										Favorite
+									</a>
+								</li>
+							</ul>
+							{% endblock %}
 							<!-- End Profile Tabs -->
+						</div>
+						<div class="col-md-6">
+							<div class="nav-align-right">
+								<ul class="nav nav-pills">
+									{% block actions %}{% endblock %}
+								</ul>
+							</div>
 						</div>
 					</div>
 					{% block content %}
@@ -134,8 +140,35 @@
 
 </body>
 {% block footer_scripts %}
+
+<!--   Core JS Files   -->
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+  crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="{% static 'churches/material.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'churches/material-kit.js' %}" type="text/javascript"></script>
+<!-- <script src="../assets/js/material.min.js"></script> -->
+
+<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+<!-- <script src="../assets/js/nouislider.min.js" type="text/javascript"></script> -->
+
+<!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
+<!-- <script src="../assets/js/bootstrap-datepicker.js" type="text/javascript"></script> -->
+
+<!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
+<!-- <script src="../assets/js/material-kit.js" type="text/javascript"></script> -->
+
 {% render_bundle 'vendor' 'js' %}
 {% render_bundle 'storefront' 'js' %}
+
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script>
+	$(function(){
+		$('.datatable').DataTable()
+	})
+</script>
 {% endblock footer_scripts %}
 
 </html>
