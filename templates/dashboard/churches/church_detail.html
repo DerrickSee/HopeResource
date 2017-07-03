@@ -92,7 +92,7 @@
               <tr>
                 <th>Name</th>
                 <th>Position</th>
-                <th>Role</th>
+                <th>Permission</th>
               </tr>
             </thead>
             <tbody>
@@ -100,7 +100,7 @@
               <tr>
                 <td>{{ member.user.get_full_name }}</td>
                 <td>{{ member.title }}</td>
-                <td>{{ member.role }}</td>
+                <td>{{ member.get_permission_display }}</td>
               </tr>
               {% endfor %}
             </tbody>

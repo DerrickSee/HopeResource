@@ -14,12 +14,13 @@
 {% block content %}
 <div class="row">
   <div class="col-lg-12">
-    <table class="table datatable">
+    <table class="table">
       <thead>
         <tr>
           <th>Name</th>
           <th>Title</th>
           <th>Permission</th>
+          <th class="text-right">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -27,7 +28,12 @@
         <tr>
           <td>{{ member.user.get_full_name }}</td>
           <td>{{ member.title }}</td>
-          <td>{{ member.role }}</td>
+          <td>{{ member.get_permission_display }}</td>
+          <td class="td-actions text-right">
+            <button type="button" rel="tooltip" title="Edit Profile" class="btn btn-success btn-simple btn-xs">
+              <i class="fa fa-edit"></i>
+            </button>
+          </td>
         </tr>
         {% endfor %}
       </tbody>

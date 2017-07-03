@@ -49,21 +49,11 @@ class ChurchMembershipCreateView(ChurchMixin, CreateView):
 
     def form_valid(self, form):
         church = get_object_or_404(Church, pk=self.kwargs.get('pk'))
-        membership = church.memberships.filter(user=form.cleaned_data['user']).first()
+        membership = church.memberships.filter(user__email=form.cleaned_data['email']).first()
         if membership:
             form.instance.pk = membership.pk
             form.instance.date_joined = membership.date_joined
         form.instance.church = church
-        if form.cleaned_data['role'] == 'owner':
-            form.instance.is_owner = True
-            form.instance.is_staff = True
-            church.memberships.filter(is_owner=True).update(is_owner=False)
-        elif form.cleaned_data['role'] == 'staff':
-            form.instance.is_owner = False
-            form.instance.is_staff = True
-        else:
-            form.instance.is_owner = False
-            form.instance.is_staff = False
         form.save()
         return super(ChurchMembershipCreateView, self).form_valid(form)
 

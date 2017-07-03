@@ -45,15 +45,10 @@ class ChurchMembershipForm(forms.ModelForm):
     first_name = forms.CharField()
     last_name = forms.CharField()
     email = forms.EmailField()
-    role = forms.ChoiceField(choices=[
-        ('member', 'Member'),
-        ('staff', 'Staff'),
-        ('owner', 'Owner'),
-    ])
 
     class Meta:
         model = ChurchMembership
-        fields = ['title']
+        fields = ['title', 'permission']
 
     def save(self, commit=True):
         instance = super(ChurchMembershipForm, self).save(commit=False)

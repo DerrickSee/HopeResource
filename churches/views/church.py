@@ -12,17 +12,17 @@ from ..models import *
 from ..forms import *
 
 
-class ChurchAdminMixin(LoginRequiredMixin, UserPassesTestMixin):
+class ChurchAdminMixin(LoginRequiredMixin):
     model = Church
 
     def dispatch(self, request, *args, **kwargs):
-        self.church = get_object_or_404(Church, slug=self.kwargs.get("slug"))
+        self.church = get_object_or_404(
+            Church,
+            slug=self.kwargs.get("slug"),
+            memberships__user=self.request.user,
+            memberships__permission__lt=3
+        )
         return super(ChurchAdminMixin, self).dispatch(request, *args, **kwargs)
-
-    def test_func(self):
-        return self.request.user.churchmembership_set.filter(
-            Q(church__slug=self.kwargs.get("slug")),
-            Q(is_owner=True) | Q(is_staff=True)).exists()
 
     def get_context_data(self, **kwargs):
         context = super(ChurchAdminMixin, self).get_context_data(**kwargs)
